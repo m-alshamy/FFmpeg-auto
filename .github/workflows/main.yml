@@ -1,4 +1,4 @@
-name: FFmpeg HLS Test
+name: FFmpeg HLS Test Large
 on:
   workflow_dispatch:
 
@@ -9,8 +9,8 @@ jobs:
       - name: Install FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Download Sample Video
-        run: wget https://www.w3schools.com/html/mov_bbb.mp4 -O input.mp4
+      - name: Download Large Sample Video
+        run: wget http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4 -O input.mp4
 
       - name: Chunk Video to HLS
         run: ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -start_number 0 -hls_time 4 -hls_list_size 0 -f hls index.m3u8
