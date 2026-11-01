@@ -1,6 +1,12 @@
-name: FFmpeg HLS Test Large
+name: FFmpeg Dynamic HLS Test
 on:
   workflow_dispatch:
+    inputs:
+      video_url:
+        description: 'رابط الفيديو المباشر (MP4)'
+        required: true
+        type: string
+        default: 'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/720/Big_Buck_Bunny_720_10s_1MB.mp4'
 
 jobs:
   build:
@@ -9,8 +15,8 @@ jobs:
       - name: Install FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Download Large Sample Video
-        run: wget http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4 -O input.mp4
+      - name: Download Video from Dynamic URL
+        run: wget "${{ github.event.inputs.video_url }}" -O input.mp4
 
       - name: Chunk Video to HLS
         run: ffmpeg -i input.mp4 -profile:v baseline -level 3.0 -start_number 0 -hls_time 4 -hls_list_size 0 -f hls index.m3u8
