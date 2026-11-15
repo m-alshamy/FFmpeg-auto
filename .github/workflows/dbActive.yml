@@ -1,4 +1,15 @@
-- name: Ping Supabase REST API
+name: Keep Supabase Alive
+on:
+  schedule:
+    # يعمل كل 3 أيام في الساعة 12 ظهراً
+    - cron: '0 12 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST API
         run: |
           response=$(curl -s -w "\n%{http_code}" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
